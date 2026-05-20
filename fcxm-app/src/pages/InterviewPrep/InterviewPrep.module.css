@@ -29,6 +29,24 @@
   margin: 0 auto;
 }
 
+.profileBadge {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.profileBadge span {
+  background-color: var(--color-bg-light-blue);
+  color: var(--color-midnight-blue);
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-subheading);
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #c5ddf5;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

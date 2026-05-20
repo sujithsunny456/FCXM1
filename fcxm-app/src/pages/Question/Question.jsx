@@ -1,47 +1,22 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Header from '../../components/layout/Header'
 import Button from '../../components/common/Button'
 import ProgressBar from '../../components/common/ProgressBar'
+import { fetchQuestions } from '../../services/questionsService'
 import styles from './Question.module.css'
-
-const QUESTIONS = {
-  behavioral: [
-    'Tell me about a time you handled a difficult situation at work.',
-    'Describe a moment when you had to work under pressure. How did you manage it?',
-    'Give an example of a goal you set and how you achieved it.',
-    'Tell me about a time you disagreed with a colleague. How did you resolve it?',
-    'Describe a situation where you showed leadership.',
-  ],
-  technical: [
-    'Walk me through your technical background and key skills.',
-    'Describe a challenging technical problem you solved recently.',
-    'How do you approach debugging a complex issue?',
-    'Explain a technology or tool you are most proficient in.',
-    'How do you stay current with new technologies in your field?',
-  ],
-  leadership: [
-    'Tell me about your leadership style.',
-    'Describe a time you motivated a team through a difficult project.',
-    'How do you handle underperforming team members?',
-    'Give an example of a strategic decision you made and its outcome.',
-    'How do you prioritize when managing multiple projects?',
-  ],
-  general: [
-    'Tell me about yourself.',
-    'Why are you interested in this role?',
-    'What are your greatest strengths?',
-    'Where do you see yourself in 5 years?',
-    'Why are you leaving your current position?',
-  ],
-}
 
 export default function Question() {
   const navigate = useNavigate()
   const location = useLocation()
-  const type = location.state?.type || 'behavioral'
-  const questions = QUESTIONS[type] || QUESTIONS.behavioral
 
+  const type = location.state?.type || 'behavioral'
+  const profile = location.state?.profile ||
+    (() => { try { return JSON.parse(localStorage.getItem('fcxm_profile') || '{}') } catch { return {} } })()
+
+  const [questions, setQuestions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answer, setAnswer] = useState('')
   const [answers, setAnswers] = useState([])
@@ -50,6 +25,28 @@ export default function Question() {
 
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
+
+  // Fetch questions on mount
+  useEffect(() => {
+    async function loadQuestions() {
+      setLoading(true)
+      setLoadError('')
+      try {
+        const qs = await fetchQuestions({
+          jobTitle: profile.jobTitle || 'Professional',
+          skills: profile.skills || '',
+          experience: profile.experience || '',
+          interviewType: type,
+        })
+        setQuestions(qs)
+      } catch (err) {
+        setLoadError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadQuestions()
+  }, [])
 
   async function startRecording() {
     setRecordingError('')
@@ -62,13 +59,10 @@ export default function Question() {
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) chunksRef.current.push(e.data)
       }
-
       mediaRecorder.onstop = () => {
         stream.getTracks().forEach((t) => t.stop())
-        // In a real app, send audio to speech-to-text API here
         setAnswer((prev) => prev + (prev ? ' ' : '') + '[Voice response recorded]')
       }
-
       mediaRecorder.start()
       setIsRecording(true)
     } catch {
@@ -91,11 +85,48 @@ export default function Question() {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else {
-      navigate('/results', { state: { answers: updatedAnswers, type } })
+      navigate('/results', { state: { answers: updatedAnswers, type, profile } })
     }
   }
 
-  const progress = ((currentIndex + 1) / questions.length) * 100
+  const progress = questions.length > 0 ? ((currentIndex + 1) / questions.length) * 100 : 0
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <Header />
+        <ProgressBar current={3} total={5} />
+        <main className={styles.main}>
+          <div className={styles.loadingCard}>
+            <div className={styles.spinner} />
+            <h2>Generating your questions...</h2>
+            <p>
+              Tailoring {type} interview questions for
+              <strong> {profile.jobTitle || 'your role'}</strong>
+              {profile.skills ? ` with skills in ${profile.skills}` : ''}
+            </p>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  // Error state
+  if (loadError || questions.length === 0) {
+    return (
+      <div className={styles.page}>
+        <Header />
+        <ProgressBar current={3} total={5} />
+        <main className={styles.main}>
+          <div className={styles.loadingCard}>
+            <p className={styles.errorMsg}>⚠️ {loadError || 'No questions generated.'}</p>
+            <Button variant="primary" onClick={() => navigate('/interview-prep')}>Go Back</Button>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -104,7 +135,10 @@ export default function Question() {
       <main className={styles.main}>
         <div className={styles.card}>
           <div className={styles.meta}>
-            <span className={styles.badge}>{type.charAt(0).toUpperCase() + type.slice(1)} Interview</span>
+            <div className={styles.metaLeft}>
+              <span className={styles.badge}>{type.charAt(0).toUpperCase() + type.slice(1)} Interview</span>
+              {profile.jobTitle && <span className={styles.roleBadge}>🎯 {profile.jobTitle}</span>}
+            </div>
             <span className={styles.counter}>Question {currentIndex + 1} of {questions.length}</span>
           </div>
 
@@ -118,22 +152,14 @@ export default function Question() {
 
           <div className={styles.micRow}>
             {!isRecording ? (
-              <button
-                className={styles.micBtn}
-                onClick={startRecording}
-                aria-label="Start recording"
-                title="Record your answer"
-              >
+              <button className={styles.micBtn} onClick={startRecording}
+                aria-label="Start recording" title="Record your answer">
                 <span className={styles.micIcon}>🎙️</span>
                 <span>Record Answer</span>
               </button>
             ) : (
-              <button
-                className={`${styles.micBtn} ${styles.recording}`}
-                onClick={stopRecording}
-                aria-label="Stop recording"
-                title="Stop recording"
-              >
+              <button className={`${styles.micBtn} ${styles.recording}`} onClick={stopRecording}
+                aria-label="Stop recording" title="Stop recording">
                 <span className={styles.micIcon}>⏹️</span>
                 <span>Stop Recording</span>
               </button>
@@ -152,11 +178,7 @@ export default function Question() {
           </div>
 
           <div className={styles.actions}>
-            <Button
-              variant="primary"
-              onClick={handleNext}
-              disabled={!answer.trim()}
-            >
+            <Button variant="primary" onClick={handleNext} disabled={!answer.trim()}>
               {currentIndex < questions.length - 1 ? 'Next Question →' : 'Finish & See Results →'}
             </Button>
           </div>

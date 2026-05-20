@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Header from '../../components/layout/Header'
 import Button from '../../components/common/Button'
 import ProgressBar from '../../components/common/ProgressBar'
@@ -13,9 +13,14 @@ const INTERVIEW_TYPES = [
 
 export default function InterviewPrep() {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // Get profile from navigation state or localStorage
+  const profile = location.state?.profile ||
+    (() => { try { return JSON.parse(localStorage.getItem('fcxm_profile') || '{}') } catch { return {} } })()
 
   function handleStart(type) {
-    navigate('/question', { state: { type } })
+    navigate('/question', { state: { type, profile } })
   }
 
   return (
@@ -25,7 +30,16 @@ export default function InterviewPrep() {
       <main className={styles.main}>
         <div className={styles.hero}>
           <h1>Start Interview Prep</h1>
-          <p>Choose the type of interview you want to practice. Our AI will guide you through questions and give you a detailed score.</p>
+          {profile.jobTitle && (
+            <div className={styles.profileBadge}>
+              <span>🎯 {profile.jobTitle}</span>
+              {profile.skills && <span>🛠 {profile.skills}</span>}
+            </div>
+          )}
+          <p>
+            Choose the type of interview to practice. Questions will be tailored to your
+            {profile.jobTitle ? ` ${profile.jobTitle} ` : ' '}role and skills.
+          </p>
         </div>
 
         <div className={styles.grid}>

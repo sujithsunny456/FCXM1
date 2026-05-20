@@ -25,10 +25,62 @@
   gap: 20px;
 }
 
-.meta {
+.metaLeft {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.roleBadge {
+  background-color: #fff3e0;
+  color: var(--color-orange);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-subheading);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.loadingCard {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 60px 40px;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.loadingCard h2 {
+  font-size: 1.4rem;
+}
+
+.loadingCard p {
+  font-size: 0.95rem;
+  color: var(--color-text-gray);
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-bg-light-blue);
+  border-top-color: var(--color-dodger-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorMsg {
+  color: #c0392b;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
 }
 
 .badge {

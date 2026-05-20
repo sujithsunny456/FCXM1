@@ -62,6 +62,33 @@
   font-size: 0.8rem;
 }
 
+.required {
+  color: var(--color-dodger-blue);
+}
+
+.hint {
+  font-weight: var(--font-weight-body);
+  color: var(--color-text-mid-gray);
+  font-size: 0.8rem;
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.skillTag {
+  background-color: var(--color-bg-light-blue);
+  color: var(--color-dodger-blue);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-subheading);
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid #c5ddf5;
+}
+
 .field input,
 .field select {
   padding: 12px 14px;
