@@ -1,0 +1,32 @@
+:root {
+  /* Primary */
+  --color-midnight-blue: #002856;
+  --color-dodger-blue: #0598CE;
+
+  /* Secondary */
+  --color-yellow: #FFC000;
+  --color-orange: #F27D2E;
+  --color-blue: #1E4278;
+  --color-gray: #555555;
+
+  /* Backgrounds */
+  --color-bg-pale-white: #F7F7F7;
+  --color-bg-light-blue: #E3EDFD;
+
+  /* Text */
+  --color-text-black: #000000;
+  --color-text-gray: #747474;
+  --color-text-mid-gray: #B3B3B3;
+
+  /* Typography */
+  --font-primary: 'Open Sans', sans-serif;
+  --font-weight-heading: 700;
+  --font-weight-subheading: 600;
+  --font-weight-body: 400;
+
+  /* Spacing */
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 2px 12px rgba(0, 40, 86, 0.10);
+  --shadow-lg: 0 4px 24px rgba(0, 40, 86, 0.16);
+}

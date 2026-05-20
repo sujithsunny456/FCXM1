@@ -1,0 +1,84 @@
+.page {
+  min-height: 100vh;
+  background-color: var(--color-bg-pale-white);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--color-text-gray);
+  margin-bottom: 32px;
+}
+
+.error {
+  background-color: #fff0f0;
+  border: 1px solid #f5c6c6;
+  color: #c0392b;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-subheading);
+  color: var(--color-midnight-blue);
+}
+
+.field input {
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-text-mid-gray);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  color: var(--color-text-black);
+  transition: border-color 0.2s;
+  background: var(--color-bg-pale-white);
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--color-dodger-blue);
+  background: #fff;
+}
+
+.register {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: var(--color-text-gray);
+}

@@ -1,0 +1,50 @@
+.header {
+  background-color: var(--color-midnight-blue);
+  padding: 16px 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logoText {
+  font-size: 1.8rem;
+  font-weight: var(--font-weight-heading);
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.logoCxm {
+  font-size: 1.8rem;
+  font-weight: var(--font-weight-heading);
+  color: var(--color-dodger-blue);
+  letter-spacing: -0.5px;
+}
+
+.logo {
+  flex-direction: row;
+  gap: 0;
+}
+
+.tagline {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-subheading);
+  color: var(--color-text-mid-gray);
+  letter-spacing: 3px;
+  margin-top: 2px;
+  width: 100%;
+}
+
+/* Override to stack tagline below brand name */
+.logo {
+  flex-direction: column;
+  gap: 0;
+}
