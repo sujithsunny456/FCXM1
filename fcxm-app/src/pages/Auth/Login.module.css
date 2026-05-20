@@ -76,9 +76,30 @@
   background: #fff;
 }
 
-.register {
+.toggle {
   text-align: center;
   margin-top: 24px;
   font-size: 0.9rem;
   color: var(--color-text-gray);
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  color: var(--color-dodger-blue);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-subheading);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.toggleBtn:hover {
+  color: #047ab5;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 32px 20px;
+  }
 }
