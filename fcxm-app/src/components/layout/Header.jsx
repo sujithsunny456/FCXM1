@@ -3,10 +3,12 @@ import styles from './Header.module.css'
 export default function Header() {
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
-        <span className={styles.logoText}>Focal</span>
-        <span className={styles.logoCxm}>CXM</span>
-        <span className={styles.tagline}>REMARKABLE</span>
+      <div className={styles.logoWrapper}>
+        <img
+          src="/logo/focalcxm-logo.svg"
+          alt="FocalCXM – Remarkable Experiences"
+          className={styles.logo}
+        />
       </div>
     </header>
   )
