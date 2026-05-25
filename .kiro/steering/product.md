@@ -13,3 +13,4 @@ A job seeker application built under the **Focal CXM** brand ("Remarkable" tagli
 - Create and manage a job seeker profile
 - Apply to jobs and track application status
 - Receive relevant job recommendations
+- 
